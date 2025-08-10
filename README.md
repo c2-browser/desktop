@@ -4,7 +4,7 @@
 
 **🚀 C2 Browser is in active development - Join us!**
 
-[![Discord](https://img.shields.io/discord/your-discord-id?color=7289da&logo=discord&logoColor=white)](https://discord.gg/mBuhtcYqvz)
+<a target="_blank" href="https://discord.gg/mBuhtcYqvz"><img src="https://dcbadge.limes.pink/api/server/mBuhtcYqvz" alt="" /></a>
 
 ## 🎯 Our Mission
 
