@@ -1,183 +1,129 @@
-# ungoogled-chromium
+# C2 Browser
 
-*A lightweight approach to removing Google web service dependency*
+*A user-first, privacy-focused browser built on ungoogled-chromium*
 
-**Help is welcome!** See the [docs/contributing.md](docs/contributing.md) document for more information.
+**🚀 C2 Browser is in active development - Join us!**
 
-## Objectives
+[![Discord](https://img.shields.io/discord/your-discord-id?color=7289da&logo=discord&logoColor=white)](https://discord.gg/mBuhtcYqvz)
 
-In descending order of significance (i.e. most important objective first):
+## 🎯 Our Mission
 
-1. **ungoogled-chromium is Google Chromium, sans dependency on Google web services**.
-2. **ungoogled-chromium retains the default Chromium experience as closely as possible**. Unlike other Chromium forks that have their own visions of a web browser, ungoogled-chromium is essentially a drop-in replacement for Chromium.
-3. **ungoogled-chromium features tweaks to enhance privacy, control, and transparency**. However, almost all of these features must be manually activated or enabled. For more details, see [Feature Overview](#feature-overview).
+**C2 Browser puts users first, always.**
 
-In scenarios where the objectives conflict, the objective of higher significance should take precedence.
+We believe every user deserves a browser that respects their privacy, gives them control, and listens to their needs. While the browser landscape is filled with options, each comes with compromises that put corporate interests above user interests.
 
-## Content Overview
+## 🌐 The Browser Landscape Problem
 
-* [Objectives](#objectives)
-* [Motivation and Philosophy](#motivation-and-philosophy)
-* [Feature Overview](#feature-overview)
-* [**Downloads**](#downloads)
-* [Source Code](#source-code)
-* [**FAQ**](#faq)
-* [Building Instructions](#building-instructions)
-* [Design Documentation](#design-documentation)
-* [**Contributing, Reporting, Contacting**](#contributing-reporting-contacting)
-* [Credits](#credits)
-* [Related Projects](#related-projects)
-* [License](#license)
+We've looked across the entire browser ecosystem, and here's what we found:
 
-## Motivation and Philosophy
+### Big Tech Browsers
+- **Chrome, Safari, Edge**: Corporate surveillance machines designed to extract your data
+- **Firefox & Firefox-based browsers**: Lack essential features like proper developer tools that developers actually want to use
 
-Without signing in to a Google Account, Chromium does pretty well in terms of security and privacy. However, Chromium still has some dependency on Google web services and binaries. In addition, Google designed Chromium to be easy and intuitive for users, which means they compromise on transparency and control of internal operations.
+### Chromium Forks
+- **Arc**: Excellent browser, but closed-source and prioritizes company interests over users
+- **Vivaldi**: Feature-rich but closed-source with unclear motives
+- **Most others**: Each has their own agenda that doesn't align with user needs
 
-ungoogled-chromium addresses these issues in the following ways:
+### The Exception
+- **Zen Browser**: Truly puts users first and we highly recommend it! However, it's Firefox-based and inherits Firefox's limitations
 
-1. Remove all remaining background requests to any web services while building and running the browser
-2. Remove all code specific to Google web services
-3. Remove all uses of pre-made binaries from the source code, and replace them with user-provided alternatives when possible.
-4. Disable features that inhibit control and transparency, and add or modify features that promote them (these changes will almost always require manual activation or enabling).
+## 🤝 Our Relationship with Zen Browser
 
-These features are implemented as configuration flags, patches, and custom scripts. For more details, consult the [Design Documentation](docs/design.md).
+**C2 Browser is the spiritual brother of Zen Browser** (though not technically related). We share the same core philosophy: **users first, always**.
 
-## Feature Overview
+While Zen focuses on the Firefox ecosystem, we're building the Chromium equivalent - giving users the best of both worlds: Chromium's superior developer tools and performance with a user-first philosophy.
 
-*This section overviews the features of ungoogled-chromium. For more detailed information, it is best to consult the source code.*
+## 🏗️ Built on Strong Foundations
 
-Contents of this section:
+C2 Browser is **proudly based on [ungoogled-chromium](https://github.com/ungoogled-software/ungoogled-chromium)**, and we support their mission wholeheartedly.
 
-* [Key Features](#key-features)
-* [Enhancing Features](#enhancing-features)
-* [Borrowed Features](#borrowed-features)
-* [Supported Platforms and Distributions](#supported-platforms-and-distributions)
+### Our Heritage
+ungoogled-chromium itself builds upon excellent work from:
+- [Inox patchset](https://github.com/gcarq/inox-patchset)
+- [Bromite](https://github.com/bromite/bromite)
+- [Debian](https://tracker.debian.org/pkg/chromium)
+- [Iridium Browser](https://iridiumbrowser.de/)
+- [Helium Browser](https://github.com/imputnet/helium-chromium/)
 
-### Key Features
+**This is where C2 Browser differs fundamentally** - we will always listen to and prioritize our users' needs.
 
-*These are the core features introduced by ungoogled-chromium.*
+## ✨ What Makes C2 Different
 
-* Disable functionality specific to Google domains (e.g. Google Host Detector, Google URL Tracker, Google Cloud Messaging, Google Hotwording, etc.)
-    * This includes disabling [Safe Browsing](https://en.wikipedia.org/wiki/Google_Safe_Browsing). Consult [the FAQ for the rationale](https://ungoogled-software.github.io/ungoogled-chromium-wiki/faq#why-is-safe-browsing-disabled).
-* Block internal requests to Google at runtime. This feature is a fail-safe measure for the above, in case Google changes or introduces new components that our patches do not disable. This feature is implemented by replacing many Google web domains in the source code with non-existent alternatives ending in `qjz9zk` (known as domain substitution; [see docs/design.md](docs/design.md#source-file-processors) for details), then [modifying Chromium to block its own requests with such domains](patches/core/ungoogled-chromium/block-trk-and-subdomains.patch). In other words, no connections are attempted to the `qjz9zk` domain.
-* Strip binaries from the source code (known as binary pruning; [see docs/design.md](docs/design.md#source-file-processors) for details)
+### User-First Philosophy
+- **Community-driven development**: Your voice shapes our roadmap
+- **Transparent decision-making**: All major decisions discussed openly with the community
+- **No corporate agenda**: We're not trying to monetize your data or push corporate interests
 
-### Enhancing Features
+### Technical Excellence
+- **Chromium-based**: Superior developer tools and web compatibility
+- **Privacy-hardened**: Built on ungoogled-chromium's privacy-first foundation
+- **Open source**: Full transparency, community auditable
+- **User-controlled**: Extensive customization options
 
-*These are the non-essential features introduced by ungoogled-chromium.*
+## 🚧 Development Status
 
-* Add many new command-line switches and `chrome://flags` entries to configure new features (which are disabled by default). See [docs/flags.md](docs/flags.md) for the exhaustive list.
-* Add *Suggestions URL* text field in the search engine editor (`chrome://settings/searchEngines`) for customizing search engine suggestions.
-* Add more URL schemes allowed to save page schemes.
-* Add Omnibox search provider "No Search" to allow disabling of searching
-* Add a custom cross-platform build configuration and packaging wrapper for Chromium. It currently supports many Linux distributions, macOS, and Windows. (See [docs/design.md](docs/design.md) for details on the system.)
-* Force all pop-ups into tabs
-* Disable automatic formatting of URLs in Omnibox (e.g. stripping `http://`, hiding certain parameters)
-* Disable intranet redirect detector (extraneous DNS requests)
-    * This breaks captive portal detection, but captive portals still work.
-* (Iridium Browser feature change) Prevent URLs with the `trk:` scheme from connecting to the Internet
-    * Also prevents any URLs with the top-level domain `qjz9zk` (as used in domain substitution) from attempting a connection.
-* (Windows-specific) Do not set the Zone Identifier on downloaded files
+C2 Browser is currently in active development. We're a team of passionate developers who believe browsers should serve users, not corporations.
 
-### Borrowed Features
+### We Need Your Help!
 
-In addition to the features introduced by ungoogled-chromium, ungoogled-chromium selectively borrows many features from the following projects (in approximate order of significance):
+**Are you a developer, designer, or just passionate about user privacy?**
 
-* [Inox patchset](https://github.com/gcarq/inox-patchset)
-* [Bromite](https://github.com/bromite/bromite)
-* [Debian](https://tracker.debian.org/pkg/chromium)
-* [Iridium Browser](https://iridiumbrowser.de/)
+We're actively seeking contributors who share our vision:
+- **Developers**: Help us build features that users actually want
+- **Designers**: Create interfaces that prioritize usability over corporate metrics
+- **Testers**: Help us ensure C2 works flawlessly for real users
+- **Community members**: Share feedback and help shape our direction
 
-### Supported Platforms and Distributions
+**Join our Discord community**: [https://discord.gg/mBuhtcYqvz](https://discord.gg/mBuhtcYqvz)
 
-[See docs/platforms.md for a list of supported platforms](docs/platforms.md).
+We're rookies with big dreams and we want to build something meaningful. If you can help in any way possible, please join us!
 
-Other platforms are discussed and tracked in this repository's Issue Tracker. Learn more about using the Issue Tracker under the section [Contributing, Reporting, Contacting](#contributing-reporting-contacting).
+## 🛠️ Building C2 Browser
 
-## Downloads
+### Prerequisites
+- Docker (recommended)
+- Linux environment
+- Approximately 15GB free disk space
+- 4+ hours for full build (depends on CPU)
 
-### Automated or maintained builds
+For detailed building instructions, see our [Building Guide](BUILDING.md).
 
-ungoogled-chromium is available in the following **software repositories**:
+## 📦 Installation
 
-* Arch: Available in the AUR, [see instructions in ungoogled-chromium-archlinux](https://github.com/ungoogled-software/ungoogled-chromium-archlinux)
-* Debian & Ubuntu: Available in OBS, find your [distribution specific instructions](https://github.com/ungoogled-software/ungoogled-chromium-debian) in the Installing section
-* Fedora: Available in [COPR](https://copr.fedorainfracloud.org/coprs/) as [`wojnilowicz/ungoogled-chromium`](https://copr.fedorainfracloud.org/coprs/wojnilowicz/ungoogled-chromium/). Also available in [RPM Fusion](https://rpmfusion.org/Configuration) as `chromium-browser-privacy` (outdated).
-* Gentoo: Available in [`::pf4public`](https://github.com/PF4Public/gentoo-overlay) overlay as [`ungoogled-chromium`](https://github.com/PF4Public/gentoo-overlay/tree/master/www-client/ungoogled-chromium) and [`ungoogled-chromium-bin`](https://github.com/PF4Public/gentoo-overlay/tree/master/www-client/ungoogled-chromium-bin) ebuilds
-* [OpenMandriva](https://openmandriva.org/) includes ungoogled-chromium as its main browser. The `chromium` package includes all ungoogling patches.
-* macOS: Available in [Homebrew](https://brew.sh/) as [`ungoogled-chromium`](https://formulae.brew.sh/cask/ungoogled-chromium). Just run `brew install --cask ungoogled-chromium`. Chromium will appear in your `/Applications` directory.
-* FreeBSD: Available in pkg as [`www/ungoogled-chromium`](https://www.freshports.org/www/ungoogled-chromium/).
+*Installation packages will be available once we reach our first stable release.*
 
-If your GNU/Linux distribution is not listed, there are distro-independent builds available via the following **package managers**:
+## 🤝 Contributing
 
-* Flatpak: Available [in the Flathub repo](https://flathub.org/apps/details/io.github.ungoogled_software.ungoogled_chromium) as `io.github.ungoogled_software.ungoogled_chromium`
-* GNU Guix: Available as `ungoogled-chromium`
-* NixOS/nixpkgs: Available as `ungoogled-chromium`
+We welcome all contributions! Whether you're fixing a bug, adding a feature, or improving documentation, every contribution helps make C2 better for everyone.
 
-### Third-party binaries
+### How to Contribute
+1. Join our [Discord](https://discord.gg/mBuhtcYqvz) to discuss your ideas
+2. Check our [Issues](../../issues) for ways to help
+3. Fork the repository and create a feature branch
+4. Submit a pull request with your changes
 
-If your operating system is not listed above, you can also try to [**Download binaries from here**](https://ungoogled-software.github.io/ungoogled-chromium-binaries/)
+### Code of Conduct
+We're committed to creating a welcoming, inclusive environment for all contributors. Be respectful, be kind, and remember we're all here because we care about building something better.
 
-*NOTE: These binaries are provided by anyone who are willing to build and submit them. Because these binaries are not necessarily [reproducible](https://reproducible-builds.org/), authenticity cannot be guaranteed; In other words, there is always a non-zero probability that these binaries may have been tampered with. In the unlikely event that this has happened to you, please [report it in a new issue](#contributing-reporting-contacting).*
+## 📧 Contact & Support
 
-These binaries are known as **contributor binaries**.
+- **Discord Community**: [https://discord.gg/mBuhtcYqvz](https://discord.gg/mBuhtcYqvz)
+- **Issues & Bug Reports**: [GitHub Issues](../../issues)
+- **Discussions**: [GitHub Discussions](../../discussions)
 
-## Source Code
+## 🙏 Acknowledgments
 
-This repository only contains the common code for all platforms; it does not contain all the configuration and scripts necessary to build ungoogled-chromium. Most users will want to use platform-specific repos, where all the remaining configuration and scripts are provided for specific platforms:
+- **ungoogled-chromium team**: For providing the privacy-first foundation
+- **Zen Browser team**: For showing us what user-first development looks like
+- **All contributors**: Everyone who believes browsers should serve users
 
-[**Find the repo for a specific platform here**](docs/platforms.md).
+## 📄 License
 
-If you wish to include ungoogled-chromium code in your own build process, consider using [the tags in this repo](https://github.com/ungoogled-software/ungoogled-chromium/tags). These tags follow the format `{chromium_version}-{revision}` where
+C2 Browser is open source software licensed under [LICENSE](LICENSE).
 
-* `chromium_version` is the version of Chromium used in `x.x.x.x` format, and
-* `revision` is a number indicating the version of ungoogled-chromium for the corresponding Chromium version.
+---
 
-Additionally, most platform-specific repos extend their tag scheme upon this one.
+**Remember**: In a world where big tech controls your browsing experience, C2 Browser gives control back to you.
 
-**Building the source code**: [See docs/building.md](docs/building.md)
-
-### Mirrors
-
-List of mirrors:
-
-* [Codeberg](https://codeberg.org): [main repo](https://codeberg.org/ungoogled-software/ungoogled-chromium) and [ungoogled-software](https://codeberg.org/ungoogled-software)
-
-## FAQ
-
-[See the frequently-asked questions (FAQ) on the Wiki](https://ungoogled-software.github.io/ungoogled-chromium-wiki/faq)
-
-## Building Instructions
-
-[See docs/building.md](docs/building.md)
-
-## Design Documentation
-
-[See docs/design.md](docs/design.md)
-
-## Contributing, Reporting, Contacting
-
-* For reporting and contacting, see [SUPPORT.md](SUPPORT.md)
-* If you're willing to help, check out the [Issue Tracker](https://github.com/ungoogled-software/ungoogled-chromium/issues) and especially issues, which [need help](https://github.com/ungoogled-software/ungoogled-chromium/issues?q=is%3Aopen+is%3Aissue+label%3A%22help+wanted%22)
-* For contributing (e.g. how to help, submitting changes, criteria for new features), see [docs/contributing.md](docs/contributing.md)
-* If you have some small contributions that don't fit our criteria, consider adding them to [ungoogled-software/contrib](https://github.com/ungoogled-software/contrib) or [our Wiki](https://github.com/ungoogled-software/ungoogled-chromium-wiki) instead.
-
-## Credits
-
-* [The Chromium Project](https://www.chromium.org/)
-* [Inox patchset](https://github.com/gcarq/inox-patchset)
-* [Debian](https://tracker.debian.org/pkg/chromium-browser)
-* [Bromite](https://github.com/bromite/bromite)
-* [Iridium Browser](https://iridiumbrowser.de/)
-* The users for testing and debugging, [contributing code](https://github.com/ungoogled-software/ungoogled-chromium/graphs/contributors), providing feedback, or simply using ungoogled-chromium in some capacity.
-
-## Related Projects
-
-List of known projects that fork or use changes from ungoogled-chromium:
-
-* [Bromite](https://github.com/bromite/bromite) (Borrows some patches. Features builds for Android)
-* [ppc64le fork](https://github.com/leo-lb/ungoogled-chromium) (Fork with changes to build for ppc64le CPUs)
-
-## License
-
-BSD-3-clause. See [LICENSE](LICENSE)
+*Users first, always.* 🚀
